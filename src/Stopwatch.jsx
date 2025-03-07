@@ -31,13 +31,12 @@ export const Stopwatch = () => {
     setIsRunning((prevIsRunning) => !prevIsRunning);
 
     if (!isRunning) {
-      console.log('Секундомер запущен');
-      
       if (circlesObj.circles.length === 0) {
-        setCirclesObj((prevCirclesObj) => ({...prevCirclesObj, currentCircleIndex: 1 }));
+        setCirclesObj((prevCirclesObj) => ({
+          ...prevCirclesObj,
+          currentCircleIndex: 1,
+        }));
       }
-    } else {
-      console.log('Секундомер не запущен');
     }
   }, [isRunning, circlesObj.circles.length]);
 
@@ -54,23 +53,12 @@ export const Stopwatch = () => {
     setIsRunning(false);
   }, []);
 
-  // const saveCircle = useCallback(() => {
-  //   if (isRunning) {
-  //     setCirclesObj((prevCirclesObj) => ({
-  //       circles: [...prevCirclesObj.circles, formatTime(circleTime)],
-  //       currentCircleIndex: prevCirclesObj.currentCircleIndex + 1,
-  //     }));
-  //     setCircleTime({ minutes: 0, seconds: 0, milliseconds: 0 });
-  //   }
-  // }, [circleTime, isRunning]);
-
   const saveCircle = useCallback(() => {
     setCirclesObj((prevCirclesObj) => ({
       circles: [...prevCirclesObj.circles, formatTime(circleTime)],
       currentCircleIndex: prevCirclesObj.currentCircleIndex + 1,
     }));
     setCircleTime({ minutes: 0, seconds: 0, milliseconds: 0 });
-    
   }, [circleTime]);
 
   useUpdateTime(time, setTime, isRunning);
@@ -82,7 +70,6 @@ export const Stopwatch = () => {
 
   const formattedTime = formatTime(time);
   const formattedCircleTime = formatTime(circleTime);
-  
 
   return (
     <div className={styles.stopwatch}>
@@ -104,7 +91,7 @@ export const Stopwatch = () => {
               <Dial
                 key={index + 1}
                 index={index + 1}
-                formattedTime={formattedCircleTime}
+                formattedTime={circlesObj.circles[index] || formattedCircleTime}
               />
             );
           })}
@@ -112,23 +99,3 @@ export const Stopwatch = () => {
     </div>
   );
 };
-
-// const saveCircle = () => {
-//   // setCirclesArr((prevCirclesArr) => [...prevCirclesArr, <Circle key={circlesArr.length} index={circlesArr.length}/>]);
-
-//   // setCirclesArr((prevCirclesArr) => [...prevCirclesArr, ])
-
-//   setCirclesObj((prevCirclesObj) => ({ ...prevCirclesObj, currentCircleIndex: prevCirclesObj.currentCircleIndex + 1 }));
-
-//   setCirclesObj((prevCirclesObj) => ({ ...prevCirclesObj, circles: [...prevCirclesObj.circles, formattedCircleTime] }))
-// };
-
-// const toggleDial = () => {
-//   isRunning ? setIsRunning(false) : setIsRunning(true);
-
-//   if (isRunning && circlesObj.circles.length === 0) {
-//     setCirclesObj((prevCirclesObj) => ({ ...prevCirclesObj, currentCircleIndex: prevCirclesObj.currentCircleIndex + 1 }));
-
-//     console.log(circlesObj.currentCircleIndex);
-//   }
-// };
