@@ -55,7 +55,7 @@ export const Stopwatch = () => {
 
   const saveCircle = useCallback(() => {
     setCirclesObj((prevCirclesObj) => ({
-      circles: [...prevCirclesObj.circles, formatTime(circleTime)],
+      circles: [...prevCirclesObj.circles, circleTime],
       currentCircleIndex: prevCirclesObj.currentCircleIndex + 1,
     }));
     setCircleTime({ minutes: 0, seconds: 0, milliseconds: 0 });
@@ -67,6 +67,8 @@ export const Stopwatch = () => {
     setCircleTime,
     isRunning && circlesObj.circles.length === circlesObj.currentCircleIndex - 1
   );
+
+  const formattedCircleTimes = circlesObj.circles.map((circle) => formatTime(circle));
 
   const formattedTime = formatTime(time);
   const formattedCircleTime = formatTime(circleTime);
@@ -91,7 +93,7 @@ export const Stopwatch = () => {
               <Dial
                 key={index + 1}
                 index={index + 1}
-                formattedTime={circlesObj.circles[index] || formattedCircleTime}
+                formattedTime={formattedCircleTimes[index] || formattedCircleTime}
               />
             );
           })}

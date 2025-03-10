@@ -1,14 +1,16 @@
 /* eslint-disable react/prop-types */
 
-export const Dial = ({ formattedTime, index }) => {
+import { memo } from "react";
 
-  if (index !== undefined) {
-    return (
+// eslint-disable-next-line react/display-name
+export const Dial = memo(({ formattedTime, index }) => {
+  return (
+    <div>
       <div>
-        Circle {index}: {formattedTime}
+        {index !== undefined
+          ? `Circle ${index}: ${formattedTime}`
+          : formattedTime}
       </div>
-    );
-  }
-
-  return <p>{formattedTime}</p>;
-};
+    </div>
+  );
+});
