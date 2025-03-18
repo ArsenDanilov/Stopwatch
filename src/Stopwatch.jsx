@@ -20,7 +20,7 @@ export const Stopwatch = () => {
   const [circlesObj, setCirclesObj] = useState({
     circles: [],
     currentCircleIndex: 0,
-  });
+  }); 
 
   const [isRunning, setIsRunning] = useState(false);
 
