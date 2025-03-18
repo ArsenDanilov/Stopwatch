@@ -1,7 +1,11 @@
-import styles from './button.module.css';
+import { memo } from 'react';
+import styles from "./button.module.css";
 
-export const Button = ({ onClick, disabled, text }) => {
-    return (
-        <button onClick={onClick} disabled={disabled} className={styles.button}>{text}</button>
-    )
-}
+// eslint-disable-next-line react/display-name, react/prop-types
+export const Button = memo(({ onClick, disabled, text }) => {
+  return (
+    <button onClick={onClick} disabled={disabled} className={styles.button}>
+      {text}
+    </button>
+  );
+});

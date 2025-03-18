@@ -1,5 +1,5 @@
 import styles from "./app.module.css";
-import { Dial } from "./Dial";
+import { Stopwatch } from "./Stopwatch";
 
 export const App = () => {
 
@@ -8,7 +8,7 @@ export const App = () => {
       <div className={styles.container}>
         Stopwatch
         <div className={styles.dial}>
-          <Dial />
+          <Stopwatch />
         </div>
       </div>
     </>
