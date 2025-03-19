@@ -1,9 +1,7 @@
 /* eslint-disable react/prop-types */
 
-import { memo } from "react";
-
 // eslint-disable-next-line react/display-name
-export const Dial = memo(({ formattedTime, index }) => {
+export const Dial = ({ formattedTime, index }) => {
   return (
     <div>
       <div>
@@ -13,4 +11,4 @@ export const Dial = memo(({ formattedTime, index }) => {
       </div>
     </div>
   );
-});
+};

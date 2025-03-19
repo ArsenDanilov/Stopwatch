@@ -1,5 +1,5 @@
 import styles from "./app.module.css";
-import { Stopwatch } from "./Stopwatch";
+import { Stopwatch } from "./Stopwatch2";
 
 export const App = () => {
 
