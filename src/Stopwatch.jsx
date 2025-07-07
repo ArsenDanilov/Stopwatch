@@ -1,26 +1,24 @@
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { Dial } from "./Dial";
 import { Button } from "./Button";
 import styles from "./stopwatch.module.css";
 import { useUpdateTime } from "./useUpdateTime";
 
 export const Stopwatch = () => {
-  const [time, setTime] = useState({
+  const INITIALSTATE = {
     minutes: 0,
     seconds: 0,
     milliseconds: 0,
-  });
+  };
 
-  const [circleTime, setCircleTime] = useState({
-    minutes: 0,
-    seconds: 0,
-    milliseconds: 0,
-  });
+  const [time, setTime] = useState(INITIALSTATE);
+
+  const [circleTime, setCircleTime] = useState(INITIALSTATE);
 
   const [circlesObj, setCirclesObj] = useState({
     circles: [],
     currentCircleIndex: 0,
-  }); 
+  });
 
   const [isRunning, setIsRunning] = useState(false);
 
@@ -47,19 +45,22 @@ export const Stopwatch = () => {
   };
 
   const resetStopwatch = useCallback(() => {
-    setTime({ minutes: 0, seconds: 0, milliseconds: 0 });
-    setCircleTime({ minutes: 0, seconds: 0, milliseconds: 0 });
+    setTime(INITIALSTATE);
+    setCircleTime(INITIALSTATE);
     setCirclesObj({ circles: [], currentCircleIndex: 0 });
     setIsRunning(false);
   }, []);
 
+  const circleTimeRef = useRef(circleTime);
+  circleTimeRef.current = circleTime;
+
   const saveCircle = useCallback(() => {
     setCirclesObj((prevCirclesObj) => ({
-      circles: [...prevCirclesObj.circles, circleTime],
+      circles: [...prevCirclesObj.circles, circleTimeRef.current],
       currentCircleIndex: prevCirclesObj.currentCircleIndex + 1,
     }));
-    setCircleTime({ minutes: 0, seconds: 0, milliseconds: 0 });
-  }, [circleTime]);
+    setCircleTime(INITIALSTATE);
+  }, []);
 
   useUpdateTime(time, setTime, isRunning);
   useUpdateTime(
@@ -68,7 +69,9 @@ export const Stopwatch = () => {
     isRunning && circlesObj.circles.length === circlesObj.currentCircleIndex - 1
   );
 
-  const formattedCircleTimes = circlesObj.circles.map((circle) => formatTime(circle));
+  const formattedCircleTimes = circlesObj.circles.map((circle) =>
+    formatTime(circle)
+  );
 
   const formattedTime = formatTime(time);
   const formattedCircleTime = formatTime(circleTime);
@@ -77,14 +80,13 @@ export const Stopwatch = () => {
     <div className={styles.stopwatch}>
       <Dial formattedTime={formattedTime} />
       <div>
-        <Button onClick={toggleDial} disabled={isRunning} text="Start" />
-        <Button onClick={toggleDial} disabled={!isRunning} text="Stop" />
+        <Button onClick={toggleDial} text={isRunning ? 'Stop' : 'Start'} />
         <Button
           onClick={resetStopwatch}
           disabled={isInitialTime}
           text="Reset"
         />
-        <Button onClick={saveCircle} text="Circle" />
+        <Button onClick={saveCircle} text="Circle" disabled={!isRunning}/>
       </div>
       <div>
         {circlesObj.currentCircleIndex > 0 &&
@@ -93,7 +95,9 @@ export const Stopwatch = () => {
               <Dial
                 key={index + 1}
                 index={index + 1}
-                formattedTime={formattedCircleTimes[index] || formattedCircleTime}
+                formattedTime={
+                  formattedCircleTimes[index] || formattedCircleTime
+                }
               />
             );
           })}
